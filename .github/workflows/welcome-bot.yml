@@ -1,0 +1,52 @@
+# ============================================================
+# FILE: .github/workflows/welcome-bot.yml
+# Automatically welcomes first-time contributors
+# ============================================================
+
+name: Welcome Bot
+on:
+  pull_request_target:
+    types: [opened]
+  issues:
+    types: [opened]
+
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const actor = context.actor;
+
+            // Check if this is the user's first PR/issue
+            const prs = await github.rest.pulls.list({
+              owner, repo, state: 'all'
+            });
+            const issues = await github.rest.issues.listForRepo({
+              owner, repo, state: 'all'
+            });
+
+            const prCount = prs.data.filter(pr => pr.user.login === actor).length;
+            const issueCount = issues.data.filter(i => i.user.login === actor).length;
+
+            if (prCount + issueCount === 1) {
+              const message = context.eventName === 'pull_request_target'
+                ? `👋 Welcome, @${actor}! Thanks for your first contribution to the AI Engineering Handbook!\n\n` +
+                  `A maintainer will review your PR within **48 hours**. In the meantime:\n\n` +
+                  `- Make sure your PR fills out the template completely\n` +
+                  `- Check that all links are working\n` +
+                  `- Review the [style guide](../blob/main/CONTRIBUTING.md#-style-guide)\n\n` +
+                  `We're glad you're here. 🙏`
+                : `👋 Welcome, @${actor}! Thanks for opening your first issue.\n\n` +
+                  `We'll take a look within **48 hours**. The more detail you provide, the faster we can help.\n\n` +
+                  `In the meantime, check our [Contributing Guide](../blob/main/CONTRIBUTING.md) if you'd like to fix this yourself!`;
+
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: context.issue.number,
+                body: message
+              });
+            }

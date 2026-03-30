@@ -1,0 +1,30 @@
+# ============================================================
+# FILE: .github/workflows/stale-bot.yml
+# Marks stale issues/PRs and closes them after inactivity
+# ============================================================
+
+name: Stale Bot
+on:
+  schedule:
+    - cron: '0 9 * * *'  # Daily at 9am
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          stale-issue-message: >
+            This issue has been inactive for 30 days. We'll close it in 7 days unless there's new activity.
+            If this is still relevant, please comment to keep it open!
+          stale-pr-message: >
+            This PR has been inactive for 14 days. We'll close it in 7 days unless there's new activity.
+            Need help finishing it? Leave a comment and a maintainer will assist!
+          close-issue-message: >
+            Closing due to inactivity. Feel free to reopen if this becomes relevant again.
+          stale-issue-label: 'stale'
+          stale-pr-label: 'stale'
+          days-before-stale: 30
+          days-before-close: 7
+          days-before-pr-stale: 14
+
