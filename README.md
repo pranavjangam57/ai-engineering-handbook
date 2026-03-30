@@ -20,10 +20,6 @@
 
 [**🚀 Start Here**](#-start-here-pick-your-path) · [**📖 Browse Topics**](#-table-of-contents) · [**🤝 Contribute**](CONTRIBUTING.md) · [**⭐ Star this repo**](https://github.com/pranavjangam57/ai-engineering-handbook)
 
-<br/>
-
-> **Used by engineers at** Google · Anthropic · OpenAI · Stripe · Netflix · Meta *(and thousands of indie builders)*
-
 </div>
 
 ---
@@ -43,10 +39,10 @@ This handbook covers the gap between **"it works on my laptop"** and **"it works
 |---|---|
 | Build my first production RAG system | [📂 RAG Engineering](#-rag--retrieval-systems) |
 | Design a reliable AI agent | [📂 Agent Architecture](#-agent-engineering) |
-| Stop my LLM from costing a fortune | [📂 Cost Optimization](#-cost--performance) |
+| Stop my LLM from costing a fortune | [📂 Cost & Performance](#-cost--performance) |
 | Evaluate my model properly | [📂 Evals & Observability](#-evals--observability) |
 | Secure my AI application | [📂 AI Security](#-ai-security) |
-| Go from zero to production fast | [📂 Starter Kits](#-starter-kits--templates) |
+| Clone a working production app | [📂 Starter Kits](#-starter-kits--templates) |
 
 ---
 
@@ -71,197 +67,125 @@ This handbook covers the gap between **"it works on my laptop"** and **"it works
 
 > **TL;DR:** Master the primitives before you build the system.
 
-### Prompt Engineering (Production-Grade)
-| Guide | Description | Difficulty |
-|---|---|---|
-| [Prompt Architecture Patterns](docs/core-llm/prompt-architecture.md) | System prompts, few-shot design, chain-of-thought | 🟡 Intermediate |
-| [Structured Output Reliability](docs/core-llm/structured-outputs.md) | JSON mode, tool use, schema enforcement | 🟡 Intermediate |
-| [Context Window Management](docs/core-llm/context-management.md) | Chunking, summarization, long-context strategies | 🔴 Advanced |
-| [Temperature & Sampling Strategies](docs/core-llm/sampling.md) | When to tune top-p, top-k, and why | 🟢 Beginner |
-
-### Model Selection & Routing
 | Guide | Description | Difficulty |
 |---|---|---|
 | [Model Comparison Matrix 2026](docs/core-llm/model-comparison.md) | GPT-4o vs Claude vs Gemini vs OSS — real benchmarks | 🟢 Beginner |
-| [Intelligent Model Routing](docs/core-llm/model-routing.md) | Route by task type to cut costs 60%+ | 🟡 Intermediate |
-| [OSS vs Proprietary Decision Tree](docs/core-llm/oss-vs-proprietary.md) | When to self-host, when to use APIs | 🟡 Intermediate |
+| Intelligent Model Routing | Route by task type to cut costs 60%+ | 🟡 Intermediate · 🚧 Coming Soon |
+| Prompt Architecture Patterns | System prompts, few-shot design, chain-of-thought | 🟡 Intermediate · 🚧 Coming Soon |
+| Structured Output Reliability | JSON mode, tool use, schema enforcement | 🟡 Intermediate · 🚧 Coming Soon |
+| Context Window Management | Chunking, summarization, long-context strategies | 🔴 Advanced · 🚧 Coming Soon |
+| LLM API Error Handling | Rate limits, timeouts, fallbacks, retries | 🟢 Beginner · 🚧 Coming Soon |
 
-<details>
-<summary>📦 Show all Core LLM guides (8 more)</summary>
-
-| Guide | Description | Difficulty |
-|---|---|---|
-| [Token Optimization Techniques](docs/core-llm/token-optimization.md) | Reduce token usage without losing quality | 🟡 Intermediate |
-| [Multimodal Engineering](docs/core-llm/multimodal.md) | Vision, audio, and document pipelines | 🔴 Advanced |
-| [Streaming Responses](docs/core-llm/streaming.md) | SSE, chunked transfer, UX patterns | 🟡 Intermediate |
-| [Prompt Injection Fundamentals](docs/core-llm/prompt-injection-basics.md) | What it is and how to defend against it | 🟢 Beginner |
-| [Function Calling Deep Dive](docs/core-llm/function-calling.md) | Tool schemas, parallel calls, error recovery | 🟡 Intermediate |
-| [Batch Processing at Scale](docs/core-llm/batch-processing.md) | Async pipelines, queue design, retry logic | 🔴 Advanced |
-| [Caching Strategies](docs/core-llm/caching.md) | Semantic caching, prompt caching, TTL design | 🟡 Intermediate |
-| [LLM API Error Handling](docs/core-llm/error-handling.md) | Rate limits, timeouts, fallbacks, retries | 🟢 Beginner |
-
-</details>
+> 📬 Want to write one of these? [Claim a topic](https://github.com/pranavjangam57/ai-engineering-handbook/issues/new?template=new_topic.md)
 
 ---
 
 ## 📂 RAG & Retrieval Systems
 
-> **TL;DR:** Retrieval-Augmented Generation is 80% retrieval engineering and 20% generation.
+> **TL;DR:** RAG is 80% retrieval engineering. Get the pipeline right — the LLM is the easy part.
 
-### Architecture Decision Tree
+### Should you use RAG?
 
 ```
-Do you need RAG?
-├── Data changes frequently?          → YES: RAG is right
-├── Data is >128k tokens?             → YES: RAG is right  
-├── Need source citations?            → YES: RAG is right
-├── Static, small, well-defined data? → MAYBE: Consider fine-tuning
-└── Real-time data required?          → YES: RAG + streaming ingestion
+├── Data changes frequently?           → YES: RAG is right
+├── Knowledge base > 128k tokens?      → YES: RAG is right
+├── Need source citations?             → YES: RAG is right
+├── Static, small, well-defined data?  → MAYBE: Consider fine-tuning
+└── Real-time data required?           → YES: RAG + streaming ingestion
 ```
 
-### Core Guides
 | Guide | Description | Difficulty |
 |---|---|---|
 | [RAG System Design](docs/rag/system-design.md) | End-to-end architecture for production RAG | 🟡 Intermediate |
-| [Chunking Strategies](docs/rag/chunking.md) | Fixed, semantic, hierarchical — tradeoffs | 🟡 Intermediate |
-| [Embedding Model Selection](docs/rag/embeddings.md) | OpenAI vs Cohere vs BGE vs local models | 🟡 Intermediate |
-| [Vector Database Comparison](docs/rag/vector-dbs.md) | Pinecone vs Weaviate vs Qdrant vs pgvector | 🟡 Intermediate |
-| [Hybrid Search](docs/rag/hybrid-search.md) | BM25 + dense vectors, re-ranking, fusion | 🔴 Advanced |
-| [RAG Evaluation Framework](docs/rag/evaluation.md) | RAGAS, faithfulness, relevance metrics | 🔴 Advanced |
-| [Advanced RAG Patterns](docs/rag/advanced-patterns.md) | HyDE, FLARE, Self-RAG, Corrective RAG | 🔴 Advanced |
+| Chunking Strategies | Fixed, semantic, hierarchical — tradeoffs | 🟡 Intermediate · 🚧 Coming Soon |
+| Embedding Model Selection | OpenAI vs Cohere vs BGE vs local models | 🟡 Intermediate · 🚧 Coming Soon |
+| Vector Database Comparison | Pinecone vs Weaviate vs Qdrant vs pgvector | 🟡 Intermediate · 🚧 Coming Soon |
+| Hybrid Search | BM25 + dense vectors, re-ranking, fusion | 🔴 Advanced · 🚧 Coming Soon |
+| Advanced RAG Patterns | HyDE, FLARE, Self-RAG, Corrective RAG | 🔴 Advanced · 🚧 Coming Soon |
 
-### 🔥 Production RAG Stack (Recommended)
+### 🔥 Run a production RAG app in 10 minutes
 
-```python
-# Minimal production-ready RAG setup
-# Full template: /starter-kits/rag-production/
+Full working kit in [`starter-kits/rag-production/`](starter-kits/rag-production/) — FastAPI + Qdrant + BGE + Claude.
 
-from qdrant_client import QdrantClient
-from anthropic import Anthropic
-from sentence_transformers import SentenceTransformer
+```bash
+git clone https://github.com/pranavjangam57/ai-engineering-handbook.git
+cd ai-engineering-handbook/starter-kits/rag-production
+cp .env.example .env        # paste your ANTHROPIC_API_KEY
+docker-compose up --build   # starts the API on :8000 + Qdrant on :6333
+```
 
-class ProductionRAG:
-    def __init__(self):
-        self.embedder = SentenceTransformer("BAAI/bge-large-en-v1.5")
-        self.vector_db = QdrantClient(url="http://localhost:6333")
-        self.llm = Anthropic()
-    
-    def retrieve(self, query: str, top_k: int = 5) -> list[dict]:
-        query_vector = self.embedder.encode(query).tolist()
-        results = self.vector_db.search(
-            collection_name="documents",
-            query_vector=query_vector,
-            limit=top_k,
-            with_payload=True
-        )
-        return [{"text": r.payload["text"], "score": r.score} for r in results]
-    
-    def generate(self, query: str, context: list[dict]) -> str:
-        context_str = "\n\n".join([f"[Score: {c['score']:.2f}]\n{c['text']}" for c in context])
-        message = self.llm.messages.create(
-            model="claude-opus-4-6",
-            max_tokens=1024,
-            system="Answer using ONLY the provided context. Cite your sources.",
-            messages=[{
-                "role": "user",
-                "content": f"Context:\n{context_str}\n\nQuestion: {query}"
-            }]
-        )
-        return message.content[0].text
-    
-    def query(self, question: str) -> str:
-        context = self.retrieve(question)
-        return self.generate(question, context)
+```bash
+# Ingest a document
+curl -X POST http://localhost:8000/ingest \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Your document text here", "source": "my-doc.txt"}'
+
+# Ask a question — get a cited answer
+curl -X POST http://localhost:8000/query \
+  -H "Content-Type: application/json" \
+  -d '{"question": "What does the document say about X?"}'
 ```
 
 ---
 
 ## 🤖 Agent Engineering
 
-> **TL;DR:** An agent is just an LLM in a loop with tools. The hard part is making the loop reliable.
-
-### The Agent Reliability Stack
+> **TL;DR:** An agent is an LLM in a loop with tools. The hard part is making the loop reliable.
 
 ```
-┌─────────────────────────────────────────┐
-│           USER REQUEST                  │
-└────────────────┬────────────────────────┘
-                 ▼
-┌─────────────────────────────────────────┐
-│         PLANNING LAYER                  │  ← ReAct / CoT / ToT
-│   (Task decomposition + intent)         │
-└────────────────┬────────────────────────┘
-                 ▼
-┌─────────────────────────────────────────┐
-│          TOOL LAYER                     │  ← APIs, Code exec, Search
-│   (Sandboxed, typed, observable)        │
-└────────────────┬────────────────────────┘
-                 ▼
-┌─────────────────────────────────────────┐
-│         MEMORY LAYER                    │  ← Short + Long term
-│   (In-context, vector, episodic)        │
-└────────────────┬────────────────────────┘
-                 ▼
-┌─────────────────────────────────────────┐
-│         SAFETY LAYER                    │  ← Guardrails + human-in-loop
-│   (Output validation, scope limits)     │
-└─────────────────────────────────────────┘
+┌──────────────────────────────────────┐
+│         PLANNING LAYER               │  ← ReAct / CoT / ToT
+└──────────────┬───────────────────────┘
+               ▼
+┌──────────────────────────────────────┐
+│          TOOL LAYER                  │  ← APIs, Code exec, Search
+└──────────────┬───────────────────────┘
+               ▼
+┌──────────────────────────────────────┐
+│         MEMORY LAYER                 │  ← Short + Long term
+└──────────────┬───────────────────────┘
+               ▼
+┌──────────────────────────────────────┐
+│         SAFETY LAYER                 │  ← Budget caps + human-in-loop
+└──────────────────────────────────────┘
 ```
 
 | Guide | Description | Difficulty |
 |---|---|---|
-| [Agent Architecture Patterns](docs/agents/architecture.md) | ReAct, Plan-and-Execute, MRKL, Reflexion | 🟡 Intermediate |
-| [Tool Design for Agents](docs/agents/tool-design.md) | Schemas, error handling, safe execution | 🟡 Intermediate |
-| [Agent Memory Systems](docs/agents/memory.md) | In-context vs vector vs episodic memory | 🔴 Advanced |
-| [Multi-Agent Orchestration](docs/agents/multi-agent.md) | Supervisor patterns, agent communication | 🔴 Advanced |
-| [Agent Reliability & Retries](docs/agents/reliability.md) | Failure modes, fallbacks, circuit breakers | 🔴 Advanced |
-| [Human-in-the-Loop Design](docs/agents/hitl.md) | When to pause, how to escalate | 🟡 Intermediate |
-
-<details>
-<summary>📦 Show all Agent Engineering guides (6 more)</summary>
-
-| Guide | Description | Difficulty |
-|---|---|---|
-| [Code Execution Agents](docs/agents/code-execution.md) | Sandboxing, E2B, Modal, security | 🔴 Advanced |
-| [Browser Agents](docs/agents/browser-agents.md) | Playwright, Puppeteer, computer use | 🔴 Advanced |
-| [Agent Evaluation](docs/agents/evaluation.md) | Benchmarking multi-step task completion | 🔴 Advanced |
-| [Agent State Management](docs/agents/state.md) | Checkpointing, resumption, persistence | 🔴 Advanced |
-| [Cost Control for Agents](docs/agents/cost-control.md) | Budget limits, early stopping, routing | 🟡 Intermediate |
-| [Agent Security](docs/agents/security.md) | Prompt injection in agentic contexts | 🔴 Advanced |
-
-</details>
+| [Agent Architecture Patterns](docs/agents/architecture.md) | ReAct, Plan-and-Execute, Multi-agent, Reflexion | 🟡 Intermediate |
+| Tool Design for Agents | Schemas, error handling, safe execution | 🟡 Intermediate · 🚧 Coming Soon |
+| Agent Memory Systems | In-context vs vector vs episodic memory | 🔴 Advanced · 🚧 Coming Soon |
+| Multi-Agent Orchestration | Supervisor patterns, agent communication | 🔴 Advanced · 🚧 Coming Soon |
+| Human-in-the-Loop Design | When to pause, how to escalate | 🟡 Intermediate · 🚧 Coming Soon |
 
 ---
 
 ## 📊 Evals & Observability
 
-> **TL;DR:** If you can't measure it, you can't ship it. Evals are the tests of AI engineering.
-
-### The Evaluation Pyramid
+> **TL;DR:** If you can't measure it, you can't ship it. Evals are the unit tests of AI engineering.
 
 ```
-                    ┌─────────┐
-                    │  A/B in │  ← Production traffic
-                    │  prod   │
-                   /└─────────┘\
-                  / ┌─────────┐ \
-                 /  │  LLM-as │  \  ← Automated evals
-                /   │  judge  │   \
-               /    └─────────┘    \
-              / ┌─────────────────┐ \
-             /  │  Unit evals on  │  \  ← Deterministic checks
-            /   │  golden dataset │   \
-           /    └─────────────────┘    \
-          └──────────────────────────────┘
+              ┌──────────┐
+              │  A/B in  │  ← Production traffic
+              │   prod   │
+             /└──────────┘\
+            / ┌──────────┐ \
+           /  │ LLM-as-  │  \  ← Automated evals
+          /   │  judge   │   \
+         /    └──────────┘    \
+        / ┌──────────────────┐ \
+       /  │  Unit evals on   │  \  ← Deterministic checks
+      /   │  golden dataset  │   \
+     /    └──────────────────┘    \
+    └────────────────────────────────┘
 ```
 
 | Guide | Description | Difficulty |
 |---|---|---|
-| [Eval Framework Design](docs/evals/framework-design.md) | Golden datasets, metrics, pipelines | 🟡 Intermediate |
-| [LLM-as-Judge](docs/evals/llm-judge.md) | When and how to use models to evaluate models | 🟡 Intermediate |
-| [RAG-Specific Evals](docs/evals/rag-evals.md) | Faithfulness, relevance, context recall | 🔴 Advanced |
-| [Observability Stack](docs/evals/observability.md) | Langfuse, Helicone, Arize, custom logging | 🟡 Intermediate |
-| [Regression Testing for LLMs](docs/evals/regression-testing.md) | Catching prompt regressions on deploy | 🔴 Advanced |
+| [Eval Framework Design](docs/evals/framework-design.md) | Golden datasets, metrics, LLM-as-judge pipeline | 🟡 Intermediate |
+| RAG-Specific Evals | Faithfulness, relevance, context recall | 🔴 Advanced · 🚧 Coming Soon |
+| Observability Stack | Langfuse, Helicone, Arize, custom logging | 🟡 Intermediate · 🚧 Coming Soon |
+| Regression Testing for LLMs | Catching prompt regressions on deploy | 🔴 Advanced · 🚧 Coming Soon |
 
 ---
 
@@ -269,20 +193,20 @@ class ProductionRAG:
 
 > **TL;DR:** AI systems have an entirely new attack surface. Most teams don't know it exists.
 
-### OWASP Top 10 for LLM Applications (2025)
+### OWASP Top 10 for LLM Applications
 
 | # | Vulnerability | Severity | Guide |
 |---|---|---|---|
-| 1 | Prompt Injection | 🔴 Critical | [Guide](docs/security/prompt-injection.md) |
-| 2 | Insecure Output Handling | 🔴 Critical | [Guide](docs/security/output-handling.md) |
-| 3 | Training Data Poisoning | 🟠 High | [Guide](docs/security/data-poisoning.md) |
-| 4 | Model Denial of Service | 🟠 High | [Guide](docs/security/model-dos.md) |
-| 5 | Supply Chain Vulnerabilities | 🟠 High | [Guide](docs/security/supply-chain.md) |
-| 6 | Sensitive Information Disclosure | 🟠 High | [Guide](docs/security/info-disclosure.md) |
-| 7 | Insecure Plugin Design | 🟡 Medium | [Guide](docs/security/plugin-security.md) |
-| 8 | Excessive Agency | 🟡 Medium | [Guide](docs/security/excessive-agency.md) |
-| 9 | Overreliance | 🟡 Medium | [Guide](docs/security/overreliance.md) |
-| 10 | Model Theft | 🟡 Medium | [Guide](docs/security/model-theft.md) |
+| 1 | Prompt Injection | 🔴 Critical | [Guide →](docs/security/prompt-injection.md) |
+| 2 | Insecure Output Handling | 🔴 Critical | 🚧 Coming Soon |
+| 3 | Training Data Poisoning | 🟠 High | 🚧 Coming Soon |
+| 4 | Model Denial of Service | 🟠 High | 🚧 Coming Soon |
+| 5 | Supply Chain Vulnerabilities | 🟠 High | 🚧 Coming Soon |
+| 6 | Sensitive Information Disclosure | 🟠 High | 🚧 Coming Soon |
+| 7 | Insecure Plugin Design | 🟡 Medium | 🚧 Coming Soon |
+| 8 | Excessive Agency | 🟡 Medium | 🚧 Coming Soon |
+| 9 | Overreliance | 🟡 Medium | 🚧 Coming Soon |
+| 10 | Model Theft | 🟡 Medium | 🚧 Coming Soon |
 
 ---
 
@@ -292,11 +216,10 @@ class ProductionRAG:
 
 | Guide | Description | Potential Savings |
 |---|---|---|
-| [Model Routing by Task](docs/cost/model-routing.md) | Use small models for simple tasks | 40–70% |
-| [Prompt Caching](docs/cost/prompt-caching.md) | Cache system prompts, reduce input tokens | 20–50% |
-| [Semantic Caching](docs/cost/semantic-caching.md) | Cache similar queries with vector lookup | 30–60% |
-| [Batching Strategies](docs/cost/batching.md) | Async batch APIs for non-real-time workloads | 50% flat |
-| [Output Length Control](docs/cost/output-length.md) | Constrain generation, use streaming wisely | 10–30% |
+| Model Routing by Task | Use small models for simple tasks | 40–70% · 🚧 Coming Soon |
+| Prompt Caching | Cache system prompts, reduce input tokens | 20–50% · 🚧 Coming Soon |
+| Semantic Caching | Cache similar queries with vector lookup | 30–60% · 🚧 Coming Soon |
+| Batching Strategies | Async batch APIs for non-real-time workloads | 50% flat · 🚧 Coming Soon |
 
 ---
 
@@ -304,11 +227,9 @@ class ProductionRAG:
 
 | Guide | Description | Difficulty |
 |---|---|---|
-| [LLM Gateway Architecture](docs/infra/gateway.md) | Rate limiting, auth, routing, logging | 🔴 Advanced |
-| [Self-Hosting OSS Models](docs/infra/self-hosting.md) | vLLM, Ollama, TGI on GPU infra | 🔴 Advanced |
-| [CI/CD for AI Systems](docs/infra/cicd.md) | Eval gates, prompt versioning, rollbacks | 🟡 Intermediate |
-| [Containerizing AI Apps](docs/infra/containers.md) | Docker, model serving, GPU support | 🟡 Intermediate |
-| [Scaling AI Workloads](docs/infra/scaling.md) | Horizontal scaling, queue-based design | 🔴 Advanced |
+| LLM Gateway Architecture | Rate limiting, auth, routing, logging | 🔴 Advanced · 🚧 Coming Soon |
+| Self-Hosting OSS Models | vLLM, Ollama, TGI on GPU infra | 🔴 Advanced · 🚧 Coming Soon |
+| CI/CD for AI Systems | Eval gates, prompt versioning, rollbacks | 🟡 Intermediate · 🚧 Coming Soon |
 
 ---
 
@@ -316,24 +237,44 @@ class ProductionRAG:
 
 | Guide | Description | Difficulty |
 |---|---|---|
-| [When NOT to Fine-Tune](docs/fine-tuning/when-to-finetune.md) | The decision tree before you spend $10k | 🟢 Beginner |
-| [LoRA & QLoRA Guide](docs/fine-tuning/lora.md) | Parameter-efficient fine-tuning in practice | 🔴 Advanced |
-| [Dataset Curation](docs/fine-tuning/datasets.md) | Building high-quality training sets | 🟡 Intermediate |
-| [RLHF & DPO](docs/fine-tuning/rlhf-dpo.md) | Preference learning for production models | 🔴 Advanced |
+| When NOT to Fine-Tune | The decision tree before you spend $10k | 🟢 Beginner · 🚧 Coming Soon |
+| LoRA & QLoRA Guide | Parameter-efficient fine-tuning in practice | 🔴 Advanced · 🚧 Coming Soon |
+| Dataset Curation | Building high-quality training sets | 🟡 Intermediate · 🚧 Coming Soon |
 
 ---
 
 ## 🚀 Starter Kits & Templates
 
-> Clone → Configure → Deploy. Every kit is production-ready.
+> Clone → Configure → Deploy. No boilerplate. No setup hell.
 
-| Kit | Stack | Deploy | Stars |
+| Kit | Stack | Status | Deploy |
 |---|---|---|---|
-| [Production RAG App](starter-kits/rag-production/) | FastAPI + Qdrant + Claude | [![Deploy](https://img.shields.io/badge/deploy-railway-blueviolet)](https://railway.app) | ⭐⭐⭐⭐⭐ |
-| [AI Chat with Memory](starter-kits/chat-with-memory/) | Next.js + Supabase + OpenAI | [![Deploy](https://img.shields.io/badge/deploy-vercel-black)](https://vercel.com) | ⭐⭐⭐⭐⭐ |
-| [Agent Backend API](starter-kits/agent-backend/) | FastAPI + Celery + Redis | [![Deploy](https://img.shields.io/badge/deploy-fly.io-purple)](https://fly.io) | ⭐⭐⭐⭐ |
-| [LLM Eval Pipeline](starter-kits/eval-pipeline/) | Python + Langfuse + RAGAS | [![Deploy](https://img.shields.io/badge/deploy-docker-blue)](https://docker.com) | ⭐⭐⭐⭐ |
-| [Multimodal Document QA](starter-kits/doc-qa/) | FastAPI + LlamaParse + Claude | [![Deploy](https://img.shields.io/badge/deploy-railway-blueviolet)](https://railway.app) | ⭐⭐⭐⭐ |
+| [**Production RAG App**](starter-kits/rag-production/) | FastAPI + Qdrant + BGE + Claude | ✅ **Ready** | [![Deploy](https://img.shields.io/badge/deploy-railway-blueviolet)](https://railway.app) |
+| AI Chat with Memory | Next.js + Supabase + Claude | 🚧 Coming Soon | — |
+| Agent Backend API | FastAPI + Celery + Redis | 🚧 Coming Soon | — |
+| LLM Eval Pipeline | Python + Langfuse + RAGAS | 🚧 Coming Soon | — |
+
+### What the RAG starter kit gives you
+
+A fully working REST API that you can point at your own documents:
+
+```
+starter-kits/rag-production/
+├── main.py              ← FastAPI: /ingest, /ingest/batch, /query, /health
+├── src/rag.py           ← Pipeline: embed → retrieve → rerank → generate
+├── src/chunker.py       ← Token-based + markdown-aware chunking
+├── src/models.py        ← Typed Pydantic request/response schemas
+├── docker-compose.yml   ← One command: API + Qdrant vector DB
+├── Dockerfile
+├── requirements.txt
+└── .env.example         ← Copy to .env, add your API key, done
+```
+
+**Real use cases you can build on top of this today:**
+- Internal knowledge base Q&A
+- Document search with citations
+- Customer support bot grounded in your docs
+- Research assistant over a PDF library
 
 ---
 
@@ -383,27 +324,18 @@ class ProductionRAG:
 
 ---
 
-## 📈 Repository Stats
-
-<div align="center">
-
-![Alt](https://repobeats.axiom.co/api/embed/yourhashhere.svg "Repobeats analytics image")
-
-</div>
-
----
-
 ## 🤝 Contributing
 
-This handbook is **community-driven**. Every guide, code snippet, and correction makes it better for 100,000+ engineers.
+This handbook grows through community contributions. Every guide written, every bug fixed, every resource added helps thousands of engineers.
 
-**Read the [Contributing Guide](CONTRIBUTING.md) before opening a PR.**
+**Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening a PR.**
 
-Quick ways to contribute right now:
-- 🐛 [Report a bug or outdated content](https://github.com/pranavjangam57/ai-engineering-handbook/issues/new?template=bug_report.md)
-- ✍️ [Propose a new topic](https://github.com/pranavjangam57/ai-engineering-handbook/issues/new?template=new_topic.md)
-- 🔗 [Add a resource or tool](https://github.com/pranavjangam57/ai-engineering-handbook/issues/new?template=add_resource.md)
-- 💬 [Start a discussion](https://github.com/pranavjangam57/ai-engineering-handbook/discussions)
+| How to contribute | What it takes |
+|---|---|
+| ✍️ [Write a 🚧 Coming Soon guide](https://github.com/pranavjangam57/ai-engineering-handbook/issues/new?template=new_topic.md) | 2–4 hours |
+| 🐛 [Fix incorrect content](https://github.com/pranavjangam57/ai-engineering-handbook/issues/new?template=bug_report.md) | 15 minutes |
+| 🔗 [Add a curated resource](https://github.com/pranavjangam57/ai-engineering-handbook/issues/new?template=add_resource.md) | 5 minutes |
+| 💬 [Start a discussion](https://github.com/pranavjangam57/ai-engineering-handbook/discussions) | 2 minutes |
 
 ---
 
@@ -413,21 +345,19 @@ Quick ways to contribute right now:
   <img src="https://contrib.rocks/image?repo=pranavjangam57/ai-engineering-handbook" />
 </a>
 
-*Built by the community, for the community. Every contributor is listed here.*
+*Every contributor is listed here automatically.*
 
 ---
 
 ## 📜 License
 
-This project is licensed under the **MIT License** — see [LICENSE](LICENSE) for details.
-
-**Share freely. Credit kindly. Build boldly.**
+MIT — see [LICENSE](LICENSE). Share freely. Credit kindly. Build boldly.
 
 ---
 
 <div align="center">
 
-**If this saved you time, saved you money, or saved you from a 3am incident — please ⭐ star this repo.**
+**If this saved you time, saved you money, or saved you from a 3am incident — ⭐ star this repo.**
 
 *It takes 2 seconds and helps thousands of engineers find it.*
 
